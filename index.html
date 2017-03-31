@@ -1,0 +1,39 @@
+<head>
+<title>Furniture game</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+
+<script type="text/javascript"
+  src="https://cdnjs.cloudflare.com/ajax/libs/paper.js/0.10.2/paper-full.js"></script>
+
+<script type="text/paperscript" src="js/main.js" canvas="c"></script>
+
+<script
+  src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+  integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g="
+  crossorigin="anonymous"></script>
+<script src="https://use.fontawesome.com/9d6ff586b5.js"></script>
+<link rel="stylesheet" type="text/css" href="style/style.css" />
+</head>
+
+<body>
+<canvas id="c" resize></canvas>
+<div class="warning"></div>
+<div class="tips-container">
+  <div>
+    <span class="fa fa-lightbulb-o"></span>
+    <span> Do you know? </span>
+  </div>
+  <div class="tips" id="tips"></div>
+</div>
+<div class="btns">
+  <div class="btn" id="btn-room"> <span class="fa fa-home"> </span> </div>
+  <div class="btn" id="btn-more"> Add Plywood </div>
+  <div class="btn" id="btn-done"> done! </div>
+  <div class="btn" id="btn-reset"> reset </div>
+</div>
+<div class="room"><img /></div>
+<div class="final"><img /></div>
+<div class="level" id="level"></div>
+<!-- <div class="credit"> Made with <3 by <a href="http://hanax.co">Hannah</a>.</div> -->
+</body>
+</html>
