@@ -1,9 +1,10 @@
 var LEVELS_PIECE = {
   1: 5,
-  2: 3
+  2: 5,
+  3: 6
 };
 
-var MAX_LEVEL = 2;
+var MAX_LEVEL = 3;
 
 var POS_PIECE = {
   0: [50, 100],
@@ -16,7 +17,8 @@ var POS_PIECE = {
 
 var TIPS = {
   1: 'In traditional design, shapes are first conceived, and then fabricated. While this decoupling simplifies the design process, it can result in inefficient material usage, especially where off-cut pieces are hard to reuse.',
-  2: 'Sustainable furniture is made from materials that have certain characteristics. These materials may be recycled or re-purposed. Anything that is made from materials that had previously been used for something else and are then re-used in the making of new furniture.'
+  2: 'Sustainable furniture is made from materials that have certain characteristics. These materials may be recycled or re-purposed. Anything that is made from materials that had previously been used for something else and are then re-used in the making of new furniture.',
+  3: 'In traditional design, shapes are first conceived, and then fabricated. While this decoupling simplifies the design process, it can result in inefficient material usage, especially where off-cut pieces are hard to reuse.'
 };
 
 var hitOptions = {
@@ -28,6 +30,7 @@ var hitOptions = {
 
 var curLevel;
 var curPieces;
+var curMoneyLeft;
 var bases;
 initializePath();
 
@@ -59,6 +62,8 @@ function initializePath() {
   addOneMoreBase();
 
   curLevel = localStorage.getItem('level') || 1;
+  curMoneyLeft = localStorage.getItem('money') || 100;
+  $('#money-left').text(curMoneyLeft);
   $('#level').text(curLevel);
   $('#tips').text(TIPS[curLevel]);
   $('.room img').attr('src', 'assets/' + (curLevel - 1) + '-room.png');
@@ -68,6 +73,7 @@ function initializePath() {
     (function(i){
       project.importSVG('assets/' + curLevel + '-' + i + '.svg', function(target) {
         curPieces[i] = target;
+        target.scale(0.3, target.bounds.topLeft);
         target.position += new Point(POS_PIECE[i][0], POS_PIECE[i][1]);
         target.opacity = 0.8;
         target.onMouseDrag = function(event) {
@@ -97,15 +103,16 @@ function initializePath() {
             curPieces.forEach(function(cpp, idx2) {
               if (idx1 === idx2) return;
               if (cpp.children[0].intersects(cp.children[0])) {
-                cp.strokeColor = 'rgba(255,0,0,0.8)';
-                cp.strokeWidth = 3;
-                $('.warning').text('Please avoid overlays in pieces!');
+                // cp.strokeColor = 'rgba(255,0,0,0.8)';
+                // cp.strokeWidth = 3;
+                // $('.warning').text('Please avoid overlays in pieces!');
                 hasCollisions = true;
               }
             });
           });
           setTimeout(function() {
-            if (!hasCollisions && everythingInside) {
+            if (everythingInside) {
+            // if (!hasCollisions && everythingInside) {
               $('#btn-done').show();
             } else {
               $('#btn-done').hide();
@@ -122,6 +129,9 @@ function initializePath() {
 
 $('#btn-more').on('click', function() {
   addOneMoreBase();
+  curMoneyLeft -= 20;
+  localStorage.setItem('money', curMoneyLeft);
+  $('#money-left').text(curMoneyLeft);
 });
 
 $('#btn-reset').on('click', function() {
@@ -131,7 +141,7 @@ $('#btn-reset').on('click', function() {
 });
 
 $('#btn-done').on('click', function() {
-  $('.final img').attr('src', 'assets/' + curLevel + '-final.png');
+  $('.final img').attr('src', 'assets/' + curLevel + '-final.svg');
   $('.final').show();
 });
 
