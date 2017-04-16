@@ -32,6 +32,7 @@ var curLevel;
 var curPieces;
 var curMoneyLeft;
 var bases;
+var enableDoneBtn;
 initializePath();
 
 function isInside(target, container) {
@@ -53,7 +54,7 @@ function addOneMoreBase() {
 
 function initializePath() {
   project.activeLayer.removeChildren();
-  $('#btn-done').hide();
+  // $('#btn-done').hide();
 
   curPieces = [];
   window.curPieces = curPieces;
@@ -63,10 +64,19 @@ function initializePath() {
 
   curLevel = localStorage.getItem('level') || 1;
   curMoneyLeft = localStorage.getItem('money') || 100;
+  playerName = localStorage.getItem('name');
+
+  if (curLevel == 1 && !playerName) {
+    $('.init').show();
+  }
+
   $('#money-left').text(curMoneyLeft);
+  $('#home-name').text(playerName ? playerName + '\'s' : '');
   $('#level').text(curLevel);
   $('#tips').text(TIPS[curLevel]);
   $('.room img').attr('src', 'assets/' + (curLevel - 1) + '-room.png');
+
+  enableDoneBtn = false;
 
   var levels_piece_n = LEVELS_PIECE[curLevel];
   for (var i = 0; i < levels_piece_n; i ++) {
@@ -90,6 +100,7 @@ function initializePath() {
           $('.warning').text('');
           var hasCollisions = false;
           var everythingInside = true;
+          var insidePieceIdx = [];
           curPieces.forEach(function(cp, idx1) {
             cp.strokeWidth = 0;
             var inOneOfBases = false;
@@ -99,23 +110,29 @@ function initializePath() {
                 inOneOfBases = true;
               }
             });
-            if (!inOneOfBases) everythingInside = false;
-            curPieces.forEach(function(cpp, idx2) {
-              if (idx1 === idx2) return;
-              if (cpp.children[0].intersects(cp.children[0])) {
-                // cp.strokeColor = 'rgba(255,0,0,0.8)';
-                // cp.strokeWidth = 3;
-                // $('.warning').text('Please avoid overlays in pieces!');
-                hasCollisions = true;
-              }
-            });
+            if (!inOneOfBases) {
+              everythingInside = false;
+            } else {
+              insidePieceIdx.push(idx1);
+            }
+            // curPieces.forEach(function(cpp, idx2) {
+            //   if (idx1 === idx2) return;
+            //   if (cpp.children[0].intersects(cp.children[0])) {
+            //     // cp.strokeColor = 'rgba(255,0,0,0.8)';
+            //     // cp.strokeWidth = 3;
+            //     // $('.warning').text('Please avoid overlays in pieces!');
+            //     hasCollisions = true;
+            //   }
+            // });
           });
           setTimeout(function() {
+            // loop thru insidePieceIdx
+            // $('.level img').attr('src', 'assets/' + curLevel + '-' + '.png');
             if (everythingInside) {
             // if (!hasCollisions && everythingInside) {
-              $('#btn-done').show();
+              enableDoneBtn = true;
             } else {
-              $('#btn-done').hide();
+              enableDoneBtn = false;
             }
           }, 200);
         };
@@ -141,6 +158,10 @@ $('#btn-reset').on('click', function() {
 });
 
 $('#btn-done').on('click', function() {
+  if (!enableDoneBtn) {
+    alert('Please double check if you have correctly cut out every piece :)');
+    return;
+  }
   $('.final img').attr('src', 'assets/' + curLevel + '-final.svg');
   $('.final').show();
 });
@@ -158,4 +179,19 @@ $('#btn-room').on('mouseover', function() {
 
 $('#btn-room').on('mouseleave', function() {
   $('.room').hide();
+});
+
+$('#btn-start').on('click', function(e) {
+  e.preventDefault();
+  localStorage.setItem('name', $('#text-name').val());
+  $('.init').hide();
+});
+
+$('#btn-start-over').on('click', function(e) {
+  if (confirm('Are you sure? You will lose all data.')) {
+    localStorage.setItem('name', '');
+    localStorage.setItem('money', 100);
+    localStorage.setItem('level', 1);
+    location.reload();
+  }
 });
