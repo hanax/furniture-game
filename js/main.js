@@ -8,12 +8,12 @@ var LEVELS_PIECE = {
 var MAX_LEVEL = 4;
 
 var POS_PIECE = {
-  0: [50, 100],
-  1: [200, 100],
-  2: [50, 250],
-  3: [200, 250],
-  4: [50, 400],
-  5: [200, 400],
+  0: [50, 400],
+  1: [200, 400],
+  2: [350, 400],
+  3: [500, 400],
+  4: [650, 400],
+  5: [800, 400],
 };
 
 var PROGRESS_IMAGES = [
@@ -72,6 +72,8 @@ var curPieces;
 var curMoneyLeft;
 var bases;
 var enableDoneBtn;
+var nBase;
+var base;
 initializePath();
 
 function isInside(target, container) {
@@ -83,26 +85,28 @@ function isInside(target, container) {
 }
 
 function addOneMoreBase() {
-  var base = new Path.Rectangle(
-    new Rectangle(new Point(400, 100 + 250 * bases.length), new Size(400, 200)));
+  nBase ++;
+  if (base) base.remove();
+  base = new Path.Rectangle(
+    new Rectangle(new Point(50, 100), new Size(100 * nBase, 200)));
   base.fillColor = '#FFD38A';
   base.shadowColor = 'rgba(0,0,0,.2)';
   base.shadowOffset = new Point(5, 5);
-  bases.push(base);
+  base.sendToBack();
 }
 
 function initializePath() {
   project.activeLayer.removeChildren();
-  // $('#btn-done').hide();
+  $('#btn-done').addClass('btn--minor');
 
   curPieces = [];
   window.curPieces = curPieces;
-  bases = [];
+  nBase = 0;
 
   addOneMoreBase();
 
   curLevel = localStorage.getItem('level') || 1;
-  curMoneyLeft = localStorage.getItem('money') || 100;
+  curMoneyLeft = localStorage.getItem('money') || 300;
   playerName = localStorage.getItem('name');
   $('.progress img').hide();
 
@@ -129,12 +133,10 @@ function initializePath() {
         target.onMouseDrag = function(event) {
           target.strokeColor = 'rgba(0,0,0,0.2)';
           target.position = event.point;
-          bases.forEach(function(base, idx) {
-            if (isInside(target.children[0], base)) {
-              base.strokeColor = 'rgba(100,255,100,0.5)';
-              base.strokeWidth = 5;
-            }
-          });
+          if (isInside(target.children[0], base)) {
+            base.strokeColor = 'rgba(100,255,100,0.5)';
+            base.strokeWidth = 5;
+          }
         };
         target.onMouseUp = function() {
           $('.warning').text('');
@@ -144,12 +146,10 @@ function initializePath() {
           curPieces.forEach(function(cp, idx1) {
             cp.strokeWidth = 0;
             var inOneOfBases = false;
-            bases.forEach(function(base, idx) {
-              base.strokeWidth = 0;
-              if (isInside(cp.children[0], base)) {
-                inOneOfBases = true;
-              }
-            });
+            base.strokeWidth = 0;
+            if (isInside(cp.children[0], base)) {
+              inOneOfBases = true;
+            }
             if (!inOneOfBases) {
               everythingInside = false;
             } else {
@@ -169,6 +169,7 @@ function initializePath() {
             if (everythingInside) {
             // if (!hasCollisions && everythingInside) {
               enableDoneBtn = true;
+              $('#btn-done').removeClass('btn--minor');
             } else {
               enableDoneBtn = false;
             }
@@ -232,6 +233,14 @@ $('#btn-room').on('mouseleave', function() {
   $('.room').hide();
 });
 
+$('#link-tutorial').on('mouseover', function() {
+  $('.tutorial').show();
+});
+
+$('#link-tutorial').on('mouseleave', function() {
+  $('.tutorial').hide();
+});
+
 $('#btn-start').on('click', function(e) {
   var pName = $('#text-name').val();
   localStorage.setItem('name', pName);
@@ -252,7 +261,7 @@ $('body').keypress(function(e){
 $('#btn-start-over').on('click', function(e) {
   if (confirm('Are you sure? You will lose all data.')) {
     localStorage.setItem('name', '');
-    localStorage.setItem('money', 100);
+    localStorage.setItem('money', 300);
     localStorage.setItem('level', 1);
     location.reload();
   }
