@@ -221,15 +221,19 @@ $('#btn-room').on('mouseleave', function() {
 });
 
 $('#btn-start').on('click', function(e) {
-  localStorage.setItem('name', $('#text-name').val());
+  var pName = $('#text-name').val();
+  localStorage.setItem('name', pName);
   $('.init').hide();
+  $('#home-name').text(pName ? pName + '\'s' : '');
 });
 
 $('body').keypress(function(e){
   if (e.keyCode === 10 || e.keyCode === 13) {
     e.preventDefault();
-    localStorage.setItem('name', $('#text-name').val());
+    var pName = $('#text-name').val();
+    localStorage.setItem('name', pName);
     $('.init').hide();
+    $('#home-name').text(pName ? pName + '\'s' : '');
   }
 });
 
