@@ -115,31 +115,37 @@ a:hover {
   z-index: 3;
 }
 
-.init img{
+.init img {
   width: 50%;
   height: auto;
 }
 
+.init a {
+  font-size: 20px;
+  color: #78A0AB;
+}
+
 .inputs {
   width: 100%;
-  margin-top: 50px;
+  margin: 50px 0;
 }
 
 .inputs * {
   font-size: 20px;
-  display: inline-block;
+  display: block;
   margin: 10px auto 0 auto;
   height: 50px;
   line-height: 50px;
   text-align: center;
+  width: 300px;
 }
 
 .inputs-btn {
   background-color: #F15C68;
   color: #fff;
   cursor: pointer;
-  width: 50px;
   transition: all .3s ;
+  margin-top: 0;
 }
 
 .inputs-btn:hover {
@@ -148,7 +154,6 @@ a:hover {
 
 .init input[type="text"] {
   border: 2px solid #fff;
-  width: 200px;
 }
 
 .final img,

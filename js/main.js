@@ -87,7 +87,7 @@ function addOneMoreBase() {
 
 function initializePath() {
   project.activeLayer.removeChildren();
-  $('#btn-done').hide();
+  // $('#btn-done').hide();
 
   curPieces = [];
   window.curPieces = curPieces;
@@ -98,6 +98,7 @@ function initializePath() {
   curLevel = localStorage.getItem('level') || 1;
   curMoneyLeft = localStorage.getItem('money') || 100;
   playerName = localStorage.getItem('name');
+  $('.progress img').hide();
 
   if (curLevel == 1 && !playerName) {
     $('.init').show();
@@ -173,6 +174,7 @@ function initializePath() {
             if (PROGRESS_IMAGES.indexOf(filename) < 0) return;
             filename = 'assets/' + filename + '.svg';
             $('.progress img').attr('src', filename);
+            $('.progress img').show();
           }, 200);
         };
         target.onDoubleClick = function() {
