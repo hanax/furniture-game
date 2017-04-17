@@ -1,10 +1,11 @@
 var LEVELS_PIECE = {
   1: 5,
   2: 5,
-  3: 6
+  3: 6,
+  4: 4
 };
 
-var MAX_LEVEL = 3;
+var MAX_LEVEL = 4;
 
 var POS_PIECE = {
   0: [50, 100],
@@ -45,13 +46,18 @@ var PROGRESS_IMAGES = [
   '3_3-1_3-2_3-3_3-4',
   '3_3-1_3-2_3-3',
   '3_3-1_3-2',
-  '3_3-1'
+  '3_3-1',
+  '4_4-1',
+  '4_4-1_4-2',
+  '4_4-1_4-2_4-3',
+  '4_4-1_4-2_4-3_4-4'
 ];
 
 var TIPS = {
   1: 'In traditional design, shapes are first conceived, and then fabricated. While this decoupling simplifies the design process, it can result in inefficient material usage, especially where off-cut pieces are hard to reuse.',
   2: 'Sustainable furniture is made from materials that have certain characteristics. These materials may be recycled or re-purposed. Anything that is made from materials that had previously been used for something else and are then re-used in the making of new furniture.',
-  3: 'In traditional design, shapes are first conceived, and then fabricated. While this decoupling simplifies the design process, it can result in inefficient material usage, especially where off-cut pieces are hard to reuse.'
+  3: 'In traditional design, shapes are first conceived, and then fabricated. While this decoupling simplifies the design process, it can result in inefficient material usage, especially where off-cut pieces are hard to reuse.',
+  4: 'Sustainable furniture is made from materials that have certain characteristics. These materials may be recycled or re-purposed. Anything that is made from materials that had previously been used for something else and are then re-used in the making of new furniture.'
 };
 
 var hitOptions = {
@@ -81,7 +87,7 @@ function addOneMoreBase() {
     new Rectangle(new Point(400, 100 + 250 * bases.length), new Size(400, 200)));
   base.fillColor = '#FFD38A';
   base.shadowColor = 'rgba(0,0,0,.2)';
-  base.shadowOffset = new Point(3, 3);
+  base.shadowOffset = new Point(5, 5);
   bases.push(base);
 }
 
@@ -209,7 +215,7 @@ $('#btn-done').on('click', function() {
 
 $('.final').on('click', function() {
   $('.final').hide();
-  curLevel = Math.min(curLevel + 1, MAX_LEVEL);
+  curLevel = Math.min(parseInt(curLevel) + 1, MAX_LEVEL);
   localStorage.setItem('level', curLevel);
   initializePath();
 });

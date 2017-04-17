@@ -68,14 +68,17 @@ a:hover {
 
 .btn {
   float: left;
-  border: 1px solid rgba(0,0,0,.5);
+  /*border: 1px solid rgba(0,0,0,.5);*/
+  box-shadow: 3px 3px 0 rgba(0,0,0,.2);
+  background-color: #78A0AB;
+  color: #fff;
   padding: 8px;
   margin: 5px;
   height: 15px;
   line-height: 15px;
+  letter-spacing: 1px;
   cursor: pointer;
   text-transform: uppercase;
-  color: rgba(0,0,0,.5);
   transition: all .3s;
 }
 
@@ -83,14 +86,22 @@ a:hover {
   display: none;
 }
 
+#btn-room {
+  background-color: #F15C68;
+}
+
 #btn-reset,
 #btn-start-over {
+  letter-spacing: 0;
   border: 0;
+  color: #78A0AB;
+  background-color: rgba(0,0,0,0);
+  box-shadow: 0 0 0;
 }
 
 .btn:hover {
-  border: 1px solid #000;
-  color: #000;
+  /*border: 1px solid #000;*/
+  box-shadow: 0 0 0;
 }
 
 .final,
@@ -102,7 +113,7 @@ a:hover {
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: rgba(255,255,255,.8);
+  background-color: rgba(255,255,255,.9);
   overflow: scroll;
   text-align: center;
   padding: 150px;
@@ -110,6 +121,7 @@ a:hover {
 
 .init {
   cursor: default;
+  overflow: hidden;
   background-color: #FFE5D1;
   text-align: center;
   z-index: 3;
@@ -146,10 +158,12 @@ a:hover {
   cursor: pointer;
   transition: all .3s ;
   margin-top: 0;
+  box-shadow: 5px 5px 0 rgba(0,0,0,.2);
 }
 
 .inputs-btn:hover {
   opacity: .8;
+  box-shadow: 0 0 0 rgba(0,0,0,.2);
 }
 
 .init input[type="text"] {
