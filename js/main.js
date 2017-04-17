@@ -158,7 +158,6 @@ function initializePath() {
             //   }
             // });
           });
-          console.log(insidePieceIdx)
           setTimeout(function() {
             if (everythingInside) {
             // if (!hasCollisions && everythingInside) {
