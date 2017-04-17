@@ -193,6 +193,10 @@ function initializePath() {
 
 $('#btn-more').on('click', function() {
   addOneMoreBase();
+  if (curMoneyLeft == 0) {
+    alert('You don\'t have sufficient money!');
+    return;
+  }
   curMoneyLeft -= 20;
   localStorage.setItem('money', curMoneyLeft);
   $('#money-left').text(curMoneyLeft);
