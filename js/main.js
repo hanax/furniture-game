@@ -15,6 +15,39 @@ var POS_PIECE = {
   5: [200, 400],
 };
 
+var PROGRESS_IMAGES = [
+  '1_1-1_1-2_1-3_1-4_1-5',
+  '1_1-1_1-2_1-3_1-4',
+  '1_1-1_1-2_1-3',
+  '1_1-1_1-2',
+  '1_1-1',
+  '1_1-2',
+  '1_1-3',
+  '1_1-4',
+  '1_1-1_1-2_1-3_1-5',
+  '1_1-1_1-2_1-5',
+  '1_1-1_1-5',
+  '1_1-5',
+  '2_2-1_2-2_2-3_2-4_2-5',
+  '2_2-1_2-2_2-3_2-4',
+  '2_2-1_2-2_2-3',
+  '2_2-1_2-2',
+  '2_2-1',
+  '2_2-2',
+  '2_2-3',
+  '2_2-4',
+  '2_2-1_2-2_2-3_2-5',
+  '2_2-1_2-2_2-5',
+  '2_2-1_2-5',
+  '2_2-5',
+  '3_3-1_3-2_3-3_3-4_3_5_3-6',
+  '3_3-1_3-2_3-3_3-4_3-5',
+  '3_3-1_3-2_3-3_3-4',
+  '3_3-1_3-2_3-3',
+  '3_3-1_3-2',
+  '3_3-1'
+];
+
 var TIPS = {
   1: 'In traditional design, shapes are first conceived, and then fabricated. While this decoupling simplifies the design process, it can result in inefficient material usage, especially where off-cut pieces are hard to reuse.',
   2: 'Sustainable furniture is made from materials that have certain characteristics. These materials may be recycled or re-purposed. Anything that is made from materials that had previously been used for something else and are then re-used in the making of new furniture.',
@@ -54,7 +87,7 @@ function addOneMoreBase() {
 
 function initializePath() {
   project.activeLayer.removeChildren();
-  // $('#btn-done').hide();
+  $('#btn-done').hide();
 
   curPieces = [];
   window.curPieces = curPieces;
@@ -81,7 +114,7 @@ function initializePath() {
   var levels_piece_n = LEVELS_PIECE[curLevel];
   for (var i = 0; i < levels_piece_n; i ++) {
     (function(i){
-      project.importSVG('assets/' + curLevel + '-' + i + '.svg', function(target) {
+      project.importSVG('assets/' + curLevel + '-' + (i+1) + '.svg', function(target) {
         curPieces[i] = target;
         target.scale(0.3, target.bounds.topLeft);
         target.position += new Point(POS_PIECE[i][0], POS_PIECE[i][1]);
@@ -125,15 +158,22 @@ function initializePath() {
             //   }
             // });
           });
+          console.log(insidePieceIdx)
           setTimeout(function() {
-            // loop thru insidePieceIdx
-            // $('.level img').attr('src', 'assets/' + curLevel + '-' + '.png');
             if (everythingInside) {
             // if (!hasCollisions && everythingInside) {
               enableDoneBtn = true;
             } else {
               enableDoneBtn = false;
             }
+
+            var filename = curLevel;
+            for (var i = 0; i < insidePieceIdx.length; i ++) {
+              filename += '_' + curLevel + '-' + (insidePieceIdx[i] + 1);
+            }
+            if (PROGRESS_IMAGES.indexOf(filename) < 0) return;
+            filename = 'assets/' + filename + '.svg';
+            $('.progress img').attr('src', filename);
           }, 200);
         };
         target.onDoubleClick = function() {
@@ -182,9 +222,16 @@ $('#btn-room').on('mouseleave', function() {
 });
 
 $('#btn-start').on('click', function(e) {
-  e.preventDefault();
   localStorage.setItem('name', $('#text-name').val());
   $('.init').hide();
+});
+
+$('body').keypress(function(e){
+  if (e.keyCode === 10 || e.keyCode === 13) {
+    e.preventDefault();
+    localStorage.setItem('name', $('#text-name').val());
+    $('.init').hide();
+  }
 });
 
 $('#btn-start-over').on('click', function(e) {

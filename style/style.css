@@ -142,20 +142,21 @@ a:hover {
   z-index: 2;
 }
 
+.progress,
 .level {
   z-index: 1;
   font-weight: 500;
   position: fixed;
   bottom: 0;
   right: 0;
-  width: 300px;
+  width: 500px;
   height: 300px;
   text-align: right;
   font-size: 250px;
-  opacity: .2;
+  opacity: .7;
 }
 
-.level img {
+.progress img {
   height: 100%;
   width: auto;
 }
