@@ -157,6 +157,11 @@ a:hover {
   width: 80%;
 }
 
+.leaderboard a {
+  color: #fff;
+  text-decoration: none;
+}
+
 .leaderboard li {
   background-color: #78A0AB;
   color: #FFF;

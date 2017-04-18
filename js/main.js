@@ -53,12 +53,12 @@ var PROGRESS_IMAGES = [
   '4_4-1_4-2_4-3_4-4'
 ];
 
-var TIPS = {
-  1: 'In traditional design, shapes are first conceived, and then fabricated. While this decoupling simplifies the design process, it can result in inefficient material usage, especially where off-cut pieces are hard to reuse.',
-  2: 'Sustainable furniture is made from materials that have certain characteristics. These materials may be recycled or re-purposed. Anything that is made from materials that had previously been used for something else and are then re-used in the making of new furniture.',
-  3: 'In traditional design, shapes are first conceived, and then fabricated. While this decoupling simplifies the design process, it can result in inefficient material usage, especially where off-cut pieces are hard to reuse.',
-  4: 'Sustainable furniture is made from materials that have certain characteristics. These materials may be recycled or re-purposed. Anything that is made from materials that had previously been used for something else and are then re-used in the making of new furniture.'
-};
+// var TIPS = {
+//   1: 'In traditional design, shapes are first conceived, and then fabricated. While this decoupling simplifies the design process, it can result in inefficient material usage, especially where off-cut pieces are hard to reuse.',
+//   2: 'Sustainable furniture is made from materials that have certain characteristics. These materials may be recycled or re-purposed. Anything that is made from materials that had previously been used for something else and are then re-used in the making of new furniture.',
+//   3: 'In traditional design, shapes are first conceived, and then fabricated. While this decoupling simplifies the design process, it can result in inefficient material usage, especially where off-cut pieces are hard to reuse.',
+//   4: 'Sustainable furniture is made from materials that have certain characteristics. These materials may be recycled or re-purposed. Anything that is made from materials that had previously been used for something else and are then re-used in the making of new furniture.'
+// };
 
 var hitOptions = {
   segments: true,
@@ -99,7 +99,12 @@ function addOneMoreBase() {
 }
 
 function initializeLeaderboard() {
+  $('#leaderboard').html();
   var scores = JSON.parse(localStorage.getItem('scores'));
+  if (!scores) {
+    $('#leaderboard').html('No data yet :(');
+    return;
+  }
   var order_scores = [];
   var max = -1;
   // rank scores
@@ -110,12 +115,14 @@ function initializeLeaderboard() {
     return b[1] - a[1];
   });
 
+  var screenshots = JSON.parse(localStorage.getItem('screenshots'));
+
   var $s_li = $('<li/>')
-    .html('<span class=\'fa fa-trophy\'></span> <span>' + order_scores[0][0] + ':\t' + '<span class=\'fa fa-dollar\'></span> <span>' + order_scores[0][1] + ' </span>')
+    .html('<a target=\'_blank\' href=\'' + screenshots[order_scores[0][0]] + '\'> <span class=\'fa fa-trophy\'></span> <span>' + order_scores[0][0] + ':\t' + '<span class=\'fa fa-dollar\'></span> <span>' + order_scores[0][1] + ' </span></a>')
     .appendTo($('#leaderboard'));
   for (var i = 1; i < order_scores.length; i ++) {
     var $s_li = $('<li/>')
-      .html('<span class=\'fa fa-user-circle-o\'></span> <span>' + order_scores[i][0] + ':\t' + '<span class=\'fa fa-dollar\'></span> <span>' + order_scores[i][1] + ' </span>')
+      .html('<a target=\'_blank\' href=\'' + screenshots[order_scores[i][0]] + '\'> <span class=\'fa fa-user-circle-o\'></span> <span>' + order_scores[i][0] + ':\t' + '<span class=\'fa fa-dollar\'></span> <span>' + order_scores[i][1] + ' </span></a>')
       .appendTo($('#leaderboard'));
   }
 }
@@ -143,7 +150,7 @@ function initializePath() {
   $('#money-left').text(curMoneyLeft);
   $('#home-name').text(playerName ? playerName + '\'s' : '');
   $('#level').text(curLevel);
-  $('#tips').text(TIPS[curLevel]);
+  // $('#tips').text(TIPS[curLevel]);
   $('.room img').attr('src', 'assets/' + (curLevel - 1) + '_room.svg');
 
   enableDoneBtn = false;
@@ -240,10 +247,10 @@ $('#btn-reset').on('click', function() {
 });
 
 $('#btn-done').on('click', function() {
-  if (!enableDoneBtn) {
-    alert('Please double check if you have correctly cut out every piece :)');
-    return;
-  }
+// if (!enableDoneBtn) {
+//   alert('Please double check if you have correctly cut out every piece :)');
+//   return;
+// }
   $('.final img').attr('src', 'assets/' + curLevel + '-final.svg');
   $('.final').show();
 });
@@ -257,6 +264,9 @@ $('.final').on('click', function() {
     var scores = JSON.parse(localStorage.getItem('scores')) || {};
     scores[playerName] = curMoneyLeft;
     localStorage.setItem('scores', JSON.stringify(scores));
+    var screenshots = JSON.parse(localStorage.getItem('screenshots')) || {};
+    screenshots[playerName] = document.getElementById("c").toDataURL("image/png");
+    localStorage.setItem('screenshots', JSON.stringify(screenshots));
     return;
   }
   curLevel = parseInt(curLevel) + 1;
@@ -290,7 +300,10 @@ $('#link-leaderboard').on('click', function() {
   $('.leaderboard').show();
 });
 
-$('.leaderboard').on('click', function() {
+$('.leaderboard').on('click', function(e) {
+  if (!$(e.target).is('div')) {
+    return;
+  }
   if (curLevel == MAX_LEVEL) {
     localStorage.setItem('name', '');
     localStorage.setItem('money', 200);
