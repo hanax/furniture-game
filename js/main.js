@@ -68,12 +68,15 @@ var hitOptions = {
 };
 
 var curLevel;
-var curPieces;
+var curPieces = [];
 var curMoneyLeft;
+var playerName;
 var bases;
 var enableDoneBtn;
 var nBase;
 var base;
+initializeLeaderboard();
+initializeBase();
 initializePath();
 
 function isInside(target, container) {
@@ -95,17 +98,41 @@ function addOneMoreBase() {
   base.sendToBack();
 }
 
-function initializePath() {
-  project.activeLayer.removeChildren();
-  $('#btn-done').addClass('btn--minor');
+function initializeLeaderboard() {
+  var scores = JSON.parse(localStorage.getItem('scores'));
+  var order_scores = [];
+  var max = -1;
+  // rank scores
+  for (var s in scores) {
+    order_scores.push([s, scores[s]]);
+  }
+  order_scores.sort(function(a, b) {
+    return b[1] - a[1];
+  });
 
-  curPieces = [];
-  window.curPieces = curPieces;
+  var $s_li = $('<li/>')
+    .html('<span class=\'fa fa-trophy\'></span> <span>' + order_scores[0][0] + ':\t' + '<span class=\'fa fa-dollar\'></span> <span>' + order_scores[0][1] + ' </span>')
+    .appendTo($('#leaderboard'));
+  for (var i = 1; i < order_scores.length; i ++) {
+    var $s_li = $('<li/>')
+      .html('<span class=\'fa fa-user-circle-o\'></span> <span>' + order_scores[i][0] + ':\t' + '<span class=\'fa fa-dollar\'></span> <span>' + order_scores[i][1] + ' </span>')
+      .appendTo($('#leaderboard'));
+  }
+}
+
+function initializeBase() {
   nBase = 0;
   addOneMoreBase();
+}
+
+function initializePath() {
+  // project.activeLayer.removeChildren();
+  $('#btn-done').addClass('btn--minor');
+
+  curLevPieces = [];
 
   curLevel = localStorage.getItem('level') || 1;
-  curMoneyLeft = localStorage.getItem('money') || 300;
+  curMoneyLeft = localStorage.getItem('money') || 200;
   playerName = localStorage.getItem('name');
   $('.progress img').hide();
 
@@ -117,7 +144,7 @@ function initializePath() {
   $('#home-name').text(playerName ? playerName + '\'s' : '');
   $('#level').text(curLevel);
   $('#tips').text(TIPS[curLevel]);
-  $('.room img').attr('src', 'assets/' + (curLevel - 1) + '-room.png');
+  $('.room img').attr('src', 'assets/' + (curLevel - 1) + '_room.svg');
 
   enableDoneBtn = false;
 
@@ -125,7 +152,7 @@ function initializePath() {
   for (var i = 0; i < levels_piece_n; i ++) {
     (function(i){
       project.importSVG('assets/' + curLevel + '-' + (i+1) + '.svg', function(target) {
-        curPieces[i] = target;
+        curLevPieces[i] = target;
         target.scale(0.3, target.bounds.topLeft);
         target.position += new Point(POS_PIECE[i][0], POS_PIECE[i][1]);
         target.opacity = 0.8;
@@ -142,7 +169,7 @@ function initializePath() {
           var hasCollisions = false;
           var everythingInside = true;
           var insidePieceIdx = [];
-          curPieces.forEach(function(cp, idx1) {
+          curLevPieces.forEach(function(cp, idx1) {
             cp.strokeWidth = 0;
             var inOneOfBases = false;
             base.strokeWidth = 0;
@@ -154,12 +181,12 @@ function initializePath() {
             } else {
               insidePieceIdx.push(idx1);
             }
-            // curPieces.forEach(function(cpp, idx2) {
+            // curLevPieces.forEach(function(cpp, idx2) {
             //   if (idx1 === idx2) return;
             //   if (cpp.children[0].intersects(cp.children[0])) {
-            //     // cp.strokeColor = 'rgba(255,0,0,0.8)';
-            //     // cp.strokeWidth = 3;
-            //     // $('.warning').text('Please avoid overlays in pieces!');
+            //     cp.strokeColor = 'rgba(255,0,0,0.8)';
+            //     cp.strokeWidth = 3;
+            //     $('.warning').text('Please avoid overlays in pieces!');
             //     hasCollisions = true;
             //   }
             // });
@@ -186,6 +213,7 @@ function initializePath() {
         target.onDoubleClick = function() {
           target.rotate(45);
         };
+        curPieces.push(curLevPieces);
       });
     })(i);
   }
@@ -200,6 +228,9 @@ $('#btn-more').on('click', function() {
   curMoneyLeft -= 20;
   localStorage.setItem('money', curMoneyLeft);
   $('#money-left').text(curMoneyLeft);
+  if (curMoneyLeft == 0) {
+    $('#btn-more').addClass('btn--minor');
+  }
 });
 
 $('#btn-reset').on('click', function() {
@@ -219,9 +250,24 @@ $('#btn-done').on('click', function() {
 
 $('.final').on('click', function() {
   $('.final').hide();
-  curLevel = Math.min(parseInt(curLevel) + 1, MAX_LEVEL);
+  if (curLevel == MAX_LEVEL) {
+    // finish all levels
+    $('.room img').attr('src', 'assets/' + MAX_LEVEL + '_room.svg');
+    $('.room').show();
+    var scores = JSON.parse(localStorage.getItem('scores')) || {};
+    scores[playerName] = curMoneyLeft;
+    localStorage.setItem('scores', JSON.stringify(scores));
+    return;
+  }
+  curLevel = parseInt(curLevel) + 1;
   localStorage.setItem('level', curLevel);
   initializePath();
+});
+
+$('.room').on('click', function() {
+  // goto leaderboard
+  initializeLeaderboard();
+  $('.leaderboard').show();
 });
 
 $('#btn-room').on('mouseover', function() {
@@ -232,12 +278,27 @@ $('#btn-room').on('mouseleave', function() {
   $('.room').hide();
 });
 
-$('#link-tutorial').on('mouseover', function() {
+$('#link-tutorial').on('click', function() {
   $('.tutorial').show();
 });
 
-$('#link-tutorial').on('mouseleave', function() {
+$('.tutorial').on('click', function() {
   $('.tutorial').hide();
+});
+
+$('#link-leaderboard').on('click', function() {
+  $('.leaderboard').show();
+});
+
+$('.leaderboard').on('click', function() {
+  if (curLevel == MAX_LEVEL) {
+    localStorage.setItem('name', '');
+    localStorage.setItem('money', 200);
+    localStorage.setItem('level', 1);
+    location.reload();
+  } else {
+    $('.leaderboard').hide();
+  }
 });
 
 $('#btn-start').on('click', function(e) {
@@ -247,7 +308,7 @@ $('#btn-start').on('click', function(e) {
   $('#home-name').text(pName ? pName + '\'s' : '');
 });
 
-$('body').keypress(function(e){
+$('body').keypress(function(e) {
   if (e.keyCode === 10 || e.keyCode === 13) {
     e.preventDefault();
     var pName = $('#text-name').val();
@@ -260,7 +321,7 @@ $('body').keypress(function(e){
 $('#btn-start-over').on('click', function(e) {
   if (confirm('Are you sure? You will lose all data.')) {
     localStorage.setItem('name', '');
-    localStorage.setItem('money', 300);
+    localStorage.setItem('money', 200);
     localStorage.setItem('level', 1);
     location.reload();
   }

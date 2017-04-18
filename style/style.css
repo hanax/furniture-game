@@ -4,7 +4,7 @@ body {
   font-family: 'Avenir', sans-serif;
   color: rgba(0,0,0,.5);
   margin: 0;
-  overflow: hidden;
+  overflow-x: scroll;
   font-size: 12px;
   cursor: crosshair;
   -webkit-touch-callout: none;
@@ -65,7 +65,7 @@ a:hover {
 }
 
 .btns {
-  position: absolute;
+  position: fixed;
   left: 50px;
   width: 100%;
   text-align: center;
@@ -112,8 +112,7 @@ a:hover {
 
 .final,
 .room,
-.init,
-.tutorial {
+.init {
   display: none;
   position: fixed;
   top: 0;
@@ -126,11 +125,50 @@ a:hover {
   padding: 150px;
 }
 
-.tutorial {
+.tutorial,
+.leaderboard {
   z-index: 4;
+  display: none;
+  cursor: default;
+  position: fixed;
+  top: 100px;
+  bottom: 100px;
+  left: 100px;
+  right: 100px;
+  background-color: rgba(255,255,255,.95);
+  /*border: 5px solid #FFD38A;*/
+  overflow: scroll;
+  text-align: center;
+  padding: 50px;
+  box-shadow: 6px 6px 0 rgba(0,0,0,.1);
+}
+
+.leaderboard h1 {
+  font-size: 30px;
+  font-weight: 700;
+  color: #F15C68;
+}
+
+.leaderboard ol {
+  /*list-style-type: none;*/
+  margin: 0 auto;
+  padding: 0;
+  font-size: 20px;
+  width: 80%;
+}
+
+.leaderboard li {
+  background-color: #78A0AB;
+  color: #FFF;
+  text-shadow: 1px 1px 0 rgba(0,0,0,.3);
+  height: 50px;
+  line-height: 50px;
+  border-radius: 4px;
+  margin-bottom: 5px;
 }
 
 .init {
+  padding-top: 100px;
   cursor: default;
   overflow: hidden;
   background-color: #FFE5D1;
@@ -143,12 +181,10 @@ a:hover {
   height: auto;
 }
 
-.init a {
-  display: inline-block;
+/*.init a {
   font-size: 20px;
   color: #78A0AB;
-  background-color: #FFE5D1;
-}
+}*/
 
 .inputs {
   width: 100%;
@@ -179,6 +215,24 @@ a:hover {
   box-shadow: 0 0 0 rgba(0,0,0,.2);
 }
 
+.home-link {
+  display: block;
+  background-color: #78A0AB;
+  width: 300px;
+  height: 30px;
+  line-height: 30px;
+  color: #fff;
+  cursor: pointer;
+  transition: all .3s ;
+  margin: 0 auto 10px auto;
+  box-shadow: 5px 5px 0 rgba(0,0,0,.2);
+}
+
+.home-link:hover {
+  opacity: .8;
+  box-shadow: 0 0 0 rgba(0,0,0,.2);
+}
+
 .init input[type="text"] {
   border: 2px solid #fff;
 }
@@ -205,15 +259,14 @@ a:hover {
 }
 
 .progress {
-  right: 0;
-  top: 0;
+  right: -50px;
   width: 800px;
-  height: 500px;
+  height: 400px;
 }
 
 .progress img {
-  height: 100%;
-  width: auto;
+  width: 100%;
+  height: auto;
 }
 
 .credit {
@@ -221,4 +274,14 @@ a:hover {
   z-index: 1;
   left: 20px;
   bottom: 20px;
+}
+
+.anim-rotate {
+  animation: rotate 2s infinite;
+}
+
+@keyframes rotate {
+    0%   {transform: rotate(0);}
+    50%   {transform: rotate(180deg);}
+    100%   {transform: rotate(360deg);}
 }
