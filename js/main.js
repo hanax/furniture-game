@@ -102,7 +102,6 @@ function initializePath() {
   curPieces = [];
   window.curPieces = curPieces;
   nBase = 0;
-
   addOneMoreBase();
 
   curLevel = localStorage.getItem('level') || 1;
