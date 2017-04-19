@@ -99,7 +99,7 @@ function addOneMoreBase() {
 }
 
 function initializeLeaderboard() {
-  $('#leaderboard').html();
+  $('#leaderboard').html('');
   var scores = JSON.parse(localStorage.getItem('scores'));
   if (!scores) {
     $('#leaderboard').html('No data yet :(');
@@ -247,11 +247,11 @@ $('#btn-reset').on('click', function() {
 });
 
 $('#btn-done').on('click', function() {
-// if (!enableDoneBtn) {
-//   alert('Please double check if you have correctly cut out every piece :)');
-//   return;
-// }
-  $('.final img').attr('src', 'assets/' + curLevel + '-final.svg');
+if (!enableDoneBtn) {
+  alert('Please double check if you have correctly cut out every piece :)');
+  return;
+}
+  $('.final img').attr('src', 'assets/' + curLevel + '_final.svg');
   $('.final').show();
 });
 

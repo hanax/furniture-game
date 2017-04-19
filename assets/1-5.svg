@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg width="608px" height="642px" viewBox="0 0 608 642" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+<svg width="633px" height="632px" viewBox="0 0 633 632" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
     <!-- Generator: Sketch 3.3.3 (12072) - http://www.bohemiancoding.com/sketch -->
-    <title>Rectangle-path</title>
+    <title>Shape</title>
     <desc>Created with Sketch.</desc>
     <defs></defs>
     <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
-        <g id="1-4" sketch:type="MSLayerGroup" stroke="#000000" fill="#000000">
-            <g id="Default" sketch:type="MSShapeGroup">
-                <rect id="Rectangle-path" x="0.7" y="0.9" width="606.6" height="640.1"></rect>
-            </g>
-        </g>
+        <path d="M632.4,316 C632.4,232.1 599.2,151.9 539.8,92.6 C480.5,33.2 400.3,0 316.4,0 C232.5,0 152.3,33.2 93,92.6 C33.6,152 0.4,232.1 0.4,316 C0.4,399.9 33.6,480.1 93,539.4 C152.4,598.8 232.5,632 316.4,632 C400.3,632 480.5,598.8 539.8,539.4 C599.2,480.1 632.4,399.9 632.4,316 L632.4,316 Z" id="Shape" fill="#394DA1" sketch:type="MSShapeGroup"></path>
     </g>
 </svg>
