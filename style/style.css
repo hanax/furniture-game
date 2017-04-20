@@ -4,7 +4,6 @@ body {
   font-family: 'Avenir', sans-serif;
   color: rgba(0,0,0,.5);
   margin: 0;
-  overflow-x: scroll;
   font-size: 12px;
   cursor: crosshair;
   -webkit-touch-callout: none;
