@@ -44,7 +44,7 @@ a:hover {
   text-transform: capitalize;
 }
 
-.tips-container {
+/*.tips-container {
   display: none;
   position: absolute;
   right: 50px;
@@ -61,7 +61,7 @@ a:hover {
 .tips {
   margin-top: 10px;
   font-size: 12px;
-}
+}*/
 
 .btns {
   position: fixed;
@@ -126,7 +126,8 @@ a:hover {
 }
 
 .tutorial,
-.leaderboard {
+.leaderboard,
+.tips {
   z-index: 4;
   display: none;
   cursor: default;
@@ -141,6 +142,15 @@ a:hover {
   text-align: center;
   padding: 50px;
   box-shadow: 6px 6px 0 rgba(0,0,0,.1);
+}
+
+.tips {
+  font-size: 16px;
+  display: block;
+  top: 200px;
+  bottom: 200px;
+  left: 300px;
+  right: 300px;
 }
 
 .tutorial {
@@ -184,7 +194,7 @@ a:hover {
 .init {
   padding-top: 100px;
   cursor: default;
-  overflow: hidden;
+  overflow-y: scroll;
   background-color: #FFE5D1;
   text-align: center;
   z-index: 3;
