@@ -91,7 +91,7 @@ function addOneMoreBase() {
   nBase ++;
   if (base) base.remove();
   base = new Path.Rectangle(
-    new Rectangle(new Point(50, 100), new Size(100 * nBase, 200)));
+    new Rectangle(new Point(50, 100), new Size(80 * nBase, 200)));
   base.fillColor = '#FFD38A';
   base.shadowColor = 'rgba(0,0,0,.2)';
   base.shadowOffset = new Point(5, 5);
@@ -139,7 +139,7 @@ function initializePath() {
   curLevPieces = [];
 
   curLevel = localStorage.getItem('level') || 1;
-  curMoneyLeft = localStorage.getItem('money') || 200;
+  curMoneyLeft = localStorage.getItem('money') || 300;
   playerName = localStorage.getItem('name');
   $('.progress img').hide();
 
@@ -306,7 +306,7 @@ $('.leaderboard').on('click', function(e) {
   }
   if (curLevel == MAX_LEVEL) {
     localStorage.setItem('name', '');
-    localStorage.setItem('money', 200);
+    localStorage.setItem('money', 300);
     localStorage.setItem('level', 1);
     location.reload();
   } else {
@@ -314,27 +314,30 @@ $('.leaderboard').on('click', function(e) {
   }
 });
 
-$('#btn-start').on('click', function(e) {
+function startGame() {
   var pName = $('#text-name').val();
   localStorage.setItem('name', pName);
   $('.init').hide();
   $('#home-name').text(pName ? pName + '\'s' : '');
-});
+
+  $('#tutorial')
+    .html('<img src=\'assets/tutorial.png\' />')
+    .show();
+}
+
+$('#btn-start').on('click', startGame);
 
 $('body').keypress(function(e) {
   if (e.keyCode === 10 || e.keyCode === 13) {
     e.preventDefault();
-    var pName = $('#text-name').val();
-    localStorage.setItem('name', pName);
-    $('.init').hide();
-    $('#home-name').text(pName ? pName + '\'s' : '');
+    startGame();
   }
 });
 
 $('#btn-start-over').on('click', function(e) {
   if (confirm('Are you sure? You will lose all data.')) {
     localStorage.setItem('name', '');
-    localStorage.setItem('money', 200);
+    localStorage.setItem('money', 300);
     localStorage.setItem('level', 1);
     location.reload();
   }

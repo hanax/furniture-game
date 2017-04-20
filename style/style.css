@@ -123,6 +123,7 @@ a:hover {
   overflow: scroll;
   text-align: center;
   padding: 150px;
+  font-size: 15px;
 }
 
 .tutorial,
@@ -141,6 +142,15 @@ a:hover {
   text-align: center;
   padding: 50px;
   box-shadow: 6px 6px 0 rgba(0,0,0,.1);
+}
+
+.tutorial {
+  font-size: 20px;
+}
+
+.tutorial img {
+  height: 100%;
+  width: auto;
 }
 
 .leaderboard h1 {
