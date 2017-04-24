@@ -192,7 +192,7 @@ a:hover {
 }
 
 .init {
-  padding-top: 100px;
+  padding-top: 80px;
   cursor: default;
   overflow-y: scroll;
   background-color: #FFE5D1;
@@ -201,7 +201,7 @@ a:hover {
 }
 
 .init img {
-  width: 50%;
+  width: 40%;
   height: auto;
 }
 
